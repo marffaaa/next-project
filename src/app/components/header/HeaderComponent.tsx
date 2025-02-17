@@ -20,7 +20,7 @@ const HeaderComponent = () => {
     }, []);
 
     return (
-        <header className="flex justify-center items-center p-4 bg-red-900 border-b-2 text-red-50">
+        <header className="flex justify-center items-center p-4 bg-red-900 text-red-50">
             <div className="flex justify-between w-4/5 ml-12">
                 <div>{userData ? <MenuComponent/> : <WithoutAuthMenuComponent/>}</div>
                 <div>{userData ? <UserLogoComponent user={userData}/> : null}</div>
