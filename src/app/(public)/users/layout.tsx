@@ -10,7 +10,6 @@ type Props = { children: ReactNode };
 const UsersLayout = ({ children }: Props) => {
   return (
     <div>
-      <MenuComponent/>
       {children}
     </div>
   );

@@ -1,22 +1,22 @@
-const UserLogoComponent = () => {
-    const cookies = document.cookie.split("; ").reduce((acc: { [key: string]: string }, cookie) => {
-        const [name, value] = cookie.split("=");
-        acc[name] = value;
-        return acc;
-    }, {});
+import { IUserData } from "@/app/models/IUserData";
+import React, {FC} from "react";
 
-    const userData = cookies.userData ? JSON.parse(decodeURIComponent(cookies.userData)) : null;
 
+interface IUserLogoProps {
+    user: IUserData;
+}
+
+const UserLogoComponent: FC<IUserLogoProps> = ({ user }) => {
     return (
         <div>
-            {userData ? (
-                <div>
-                    <img className='w-20 h-20 rounded-3xl' src={userData.image} alt={`${userData.firstName} ${userData.lastName}`} />
-                    <h2>{userData.firstName} {userData.lastName}</h2>
+            {user ? (
+                <div className="flex flex-col justify-center text-center place-items-center p-1 text-sm">
+                    <img className="w-12 h-12 rounded-3xl" src={user.image} alt={`${user.firstName} ${user.lastName}`} />
+                    <h2>{user.firstName} {user.lastName}</h2>
                 </div>
             ) : (
                 <div>
-                    <img width="80" height="80" src="https://img.icons8.com/dotty/80/user.png" alt="user"/>
+                    <img width="50" height="50" src="https://img.icons8.com/dotty/80/user.png" alt="user" />
                 </div>
             )}
         </div>

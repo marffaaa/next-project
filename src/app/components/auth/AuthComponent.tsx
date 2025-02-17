@@ -1,22 +1,30 @@
 "use client";
 
-import {FC, FormEvent, useState} from "react";
-import {handleLogin} from "@/app/services/auth.services";
-
+import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { handleLogin } from "@/app/services/auth.services";
 
 interface AuthComponentProps {
     onLoginSuccess: () => void;
 }
 
+interface IFormInputs {
+    username: string;
+    password: string;
+}
+
 const AuthComponent: FC<AuthComponentProps> = ({ onLoginSuccess }) => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        await handleLogin(username, password, onLoginSuccess, setErrorMessage, setSuccessMessage);
+    // Ініціалізація useForm
+    const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm<IFormInputs>({
+        mode: "all"
+    });
+
+    const onSubmit = async (formData: IFormInputs) => {
+        await handleLogin(formData.username, formData.password, onLoginSuccess, setErrorMessage, setSuccessMessage);
+        reset();
     };
 
     return (
@@ -25,22 +33,32 @@ const AuthComponent: FC<AuthComponentProps> = ({ onLoginSuccess }) => {
             {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
             {successMessage && <p className="text-green-500 text-center">{successMessage}</p>}
 
-            <form onSubmit={handleSubmit} className="flex flex-col">
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="border p-2 rounded mb-4"
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="border p-2 rounded mb-4"
-                />
-                <button type="submit" className="bg-red-500 text-white py-2 rounded">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        {...register("username", { required: "Username is required" })}
+                        className="border p-2 rounded mb-4"
+                    />
+                    {errors.username && <p className="text-red-500">{errors.username.message}</p>}
+                </div>
+
+                <div>
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        {...register("password", { required: "Password is required" })}
+                        className="border p-2 rounded mb-4"
+                    />
+                    {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                </div>
+
+                <button
+                    type="submit"
+                    className="bg-red-500 text-white py-2 rounded"
+                    disabled={!isValid}
+                >
                     Login
                 </button>
             </form>

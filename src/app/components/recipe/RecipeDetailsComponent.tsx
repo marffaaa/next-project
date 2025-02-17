@@ -1,5 +1,4 @@
 import { IRecipe } from "../../models/IRecipe";
-import "./Recipe.css";
 import Link from "next/dist/client/app-dir/link";
 
 type RecipeDetailComponentProps = {
@@ -46,7 +45,7 @@ const RecipeDetailComponent = ({ recipe }: RecipeDetailComponentProps) => {
                 <p className='p-3'><strong>Tags:</strong>
                     {recipe.tags.map((tag, index) => (
                         <Link
-                            href={'/auth/recipes/tag/' + tag}
+                            href={'/recipes/tag/' + tag}
                             key={index}
                             className="cursor-pointer text-red-700 font-bold ml-2 hover:underline"
 

@@ -14,12 +14,12 @@ const RecipeComponent: FC<PropsType> = ({ recipe }) => {
             <div
                 className='bg-red-200 shadow-md w-2/6 rounded-3xl flex flex-col justify-center text-red-950 p-5 pl-12 my-6'>
                 <h2 className='text-xl text-red-950 font-semibold'>
-                    <Link href={`/auth/recipes/${recipe.id}`}>{recipe.id}. {recipe.name}</Link>
+                    <Link href={`/recipes/${recipe.id}`}>{recipe.id}. {recipe.name}</Link>
                 </h2>
                 <p className='p-3'><strong>Tags:</strong>
                     {recipe.tags.map((tag, index) => (
                         <Link
-                            href={'/auth/recipes/tag/' + tag}
+                            href={'/recipes/tag/' + tag}
                             key={index}
                             className="cursor-pointer text-red-700 font-bold ml-2 hover:underline"
 

@@ -1,8 +1,10 @@
+'use client';
+
 import { FC } from "react";
 import { IUser } from "../../models/IUser";
 import { IRecipe } from "../../models/IRecipe";
 import { useUserRecipes } from "./useUserRecipes";
-import Link from "next/dist/client/app-dir/link";
+import Link from "next/link";
 
 type PropsType = {
     user: IUser;
@@ -36,14 +38,12 @@ const UserDetailsComponent: FC<PropsType> = ({ user }) => {
                     <ul>
                         {recipes.map((recipe: IRecipe) => (
                             <li key={recipe.id}>
-                                <Link href={`/auth/recipes/${recipe.id}`}>{recipe.name}</Link>
+                                <Link href={`/recipes/${recipe.id}`}>{recipe.name}</Link>
                             </li>
                         ))}
                     </ul>
                 )}
             </div>
-
-
         </div>
     );
 };

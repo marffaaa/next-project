@@ -1,7 +1,7 @@
 'use client'
 
 import {useSearchParams} from "next/navigation";
-import PaginationComponent from "@/app/components/users/pagination/PaginationComponent";
+import PaginationComponent from "@/app/components/pagination/PaginationComponent";
 import RecipeComponent from "../recipe/RecipeComponent";
 import { useRecipes } from "../recipe/useRecipes";
 

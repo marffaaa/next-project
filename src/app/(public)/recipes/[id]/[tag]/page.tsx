@@ -2,7 +2,7 @@
 
 import { useParams, useSearchParams } from "next/navigation";
 import RecipeTagsComponent from "@/app/components/recipe/RecipeTagsComponent";
-import PaginationComponent from "@/app/components/users/pagination/PaginationComponent";
+import PaginationComponent from "@/app/components/pagination/PaginationComponent";
 import { useRecipesByTag } from "@/app/components/recipe/useRecipesByTag";
 import RecipeListComponent from "@/app/components/recipes/RecipeListComponent";
 

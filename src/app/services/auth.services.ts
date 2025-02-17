@@ -1,48 +1,43 @@
+import { IAuthResponse } from "../models/IAuthResponse";
 import {Dispatch, SetStateAction} from "react";
-import {IAuthResponse} from "@/app/models/IAuthResponse";
+import axiosInstance from "@/app/services/axiosInstance";
 
 export const handleLogin = async (
     username: string,
     password: string,
     onLoginSuccess: (userData: IAuthResponse) => void,
     setErrorMessage: Dispatch<SetStateAction<string | null>>,
-    setSuccessMessage:Dispatch<SetStateAction<string | null>>
+    setSuccessMessage: Dispatch<SetStateAction<string | null>>
 ) => {
     setErrorMessage(null);
     setSuccessMessage(null);
 
-    if (!username || !password) {
-        setErrorMessage("Please enter both username and password.");
-        return;
-    }
-
     try {
-        const response = await fetch("https://dummyjson.com/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                username,
-                password,
-                expiresInMins: 30,
-            }),
-            credentials: "include",
+        // Виконуємо запит на логін за допомогою axios
+        const { data: userWithTokens } = await axiosInstance.post<IAuthResponse>("/login", {
+            username,
+            password,
+            expiresInMins: 30,
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            setErrorMessage(errorData.message || "Login failed. Please try again.");
-            return;
-        }
+        // Зберігаємо accessToken в localStorage
+        localStorage.setItem("accessToken", userWithTokens.accessToken);
 
-        const userData:IAuthResponse = await response.json();
+        // Отримуємо дані про користувача
+        const { data: userInfo } = await axiosInstance.get<IAuthResponse>("/me", {
+            headers: {
+                Authorization: `Bearer ${userWithTokens.accessToken}`,
+            },
+        });
 
-        document.cookie = `accessToken=${userData.accessToken}; path=/; max-age=${30 * 60}`;
-        document.cookie = `userData=${JSON.stringify(userData)}; path=/; max-age=${30 * 60}`;
+        // Зберігаємо інформацію про користувача в localStorage
+        localStorage.setItem("userData", JSON.stringify(userInfo));
 
-        onLoginSuccess(userData);
-        setSuccessMessage(`Login successful! Welcome, ${userData.firstName} ${userData.lastName}`);
+        // Викликаємо функцію onLoginSuccess для обробки успішного логіну
+        onLoginSuccess(userInfo);
 
-        return userData;
+        setSuccessMessage(`Login successful! Welcome, ${userInfo.firstName} ${userInfo.lastName}`);
+        return userInfo;
 
     } catch (err) {
         console.error(err);
