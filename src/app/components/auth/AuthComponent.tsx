@@ -2,6 +2,7 @@
 
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { handleLogin } from "@/app/services/auth.services";
 import { IFormInputs } from "@/app/models/IFormInputs";
 
@@ -9,8 +10,8 @@ interface AuthComponentProps {
     onLoginSuccess: () => void;
 }
 
-
 const AuthComponent: FC<AuthComponentProps> = ({ onLoginSuccess }) => {
+    const router = useRouter();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -19,17 +20,24 @@ const AuthComponent: FC<AuthComponentProps> = ({ onLoginSuccess }) => {
     });
 
     const onSubmit = async (formData: IFormInputs) => {
-        await handleLogin(formData.username, formData.password, onLoginSuccess, setErrorMessage, setSuccessMessage);
+        await handleLogin(
+            formData.username,
+            formData.password,
+            onLoginSuccess,
+            setErrorMessage,
+            setSuccessMessage,
+            router
+        );
         reset();
     };
 
     return (
-        <div className="bg-white p-4 rounded-2xl shadow-md h-3/6 w-4/12  mb-12 flex flex-col justify-center place-items-center   ">
+        <div className="bg-white p-4 rounded-2xl shadow-md h-3/6 w-4/12 mb-12 flex flex-col justify-center place-items-center">
             <h1 className="text-4xl font-semibold text-center mb-6 mt-6">Login</h1>
             {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
             {successMessage && <p className="text-green-500 text-center">{successMessage}</p>}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-56 text place-items-center">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-56 place-items-center">
                 <div>
                     <input
                         type="text"

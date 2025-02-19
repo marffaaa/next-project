@@ -1,6 +1,6 @@
 import {FC} from "react";
 
-interface RecipeTagsProps {
+type RecipeTagsProps= {
     tag: string;
 }
 

@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { IUser } from "../../models/IUser";
-import Link from "next/link";  // Використовуємо правильний імпорт
-
+import Link from "next/link";
 type Props = {
     user: IUser;
 };

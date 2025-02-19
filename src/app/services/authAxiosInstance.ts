@@ -1,15 +1,16 @@
 import axios from "axios";
 
-export const getAuthToken = (): string | null => {
-    return localStorage.getItem("accessToken");
+const getAccessToken = () => {
+    return typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 };
 
-export const getAuthAxios = () => {
-    const token = getAuthToken();
+export const createAuthAxiosInstance = () => {
+    const token = getAccessToken();
     return axios.create({
+        baseURL: "https://dummyjson.com",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token ? `Bearer ${token}` : "",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
     });
 };

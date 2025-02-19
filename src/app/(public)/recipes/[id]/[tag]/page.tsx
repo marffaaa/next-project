@@ -5,9 +5,8 @@ import RecipeTagsComponent from "@/app/components/recipe/RecipeTagsComponent";
 import PaginationComponent from "@/app/components/pagination/PaginationComponent";
 import { useRecipesByTag } from "@/app/components/recipe/useRecipesByTag";
 import RecipeListComponent from "@/app/components/recipes/RecipeListComponent";
+import {lim} from "@/app/const/constants";
 
-
-const limit = 10;
 
 const RecipeTagPage = () => {
     const { tag } = useParams<{ tag: string }>();
@@ -35,7 +34,7 @@ const RecipeTagPage = () => {
                 )}
             </div>
             <div className="flex justify-center mt-auto">
-                <PaginationComponent total={total} limit={limit} skip={skip}/>
+                <PaginationComponent total={total} limit={lim} skip={skip}/>
             </div>
         </div>
     );

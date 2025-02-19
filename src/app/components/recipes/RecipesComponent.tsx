@@ -4,12 +4,12 @@ import {useSearchParams} from "next/navigation";
 import PaginationComponent from "@/app/components/pagination/PaginationComponent";
 import RecipeComponent from "../recipe/RecipeComponent";
 import { useRecipes } from "../recipe/useRecipes";
+import {limit} from "@/app/const/constants";
 
 
 const RecipesComponent = () => {
     const searchParam = useSearchParams();
-    const limit = 30;
-    const skip = searchParam.get('skip') ? Number(searchParam.get('skip')) : 0;
+    const skip: number = searchParam.get('skip') ? Number(searchParam.get('skip')) : 0;
     const { recipes, total } = useRecipes(skip);
 
     return (
